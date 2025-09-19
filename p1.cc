@@ -18,6 +18,28 @@ int main(int argc, char **argv){
   const int threshold = std::stoi(argv[2]);
   const std::string output_file(argv[3]);
 
+  Image image;
+  if (!ReadImage(input_file, &image)) {
+    std::cout <<"Can't open file " << input_file << std::endl;
+    return 0;
+  }  
+
+  for(int i =0; i < image.num_rows(); ++i){
+    for(int j =0; j <image.num_columns(); ++j){
+        if(image.GetPixel(i,j) < threshold){
+            image.SetPixel(i,j,0);
+        }
+        else{
+            image.SetPixel(i,j,255);
+        }
+    }   
+  }
+  
+  if (!WriteImage(output_file, image)){
+    std::cout << "Can't write to file " << output_file << std::endl;
+    return 0;
+  }
+
   std::cout << "Running p1 " << input_file << " " 
             << threshold << " " << output_file << std::endl;
 }
